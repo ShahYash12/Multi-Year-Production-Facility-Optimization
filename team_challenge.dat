@@ -1,0 +1,140 @@
+# ==========================================
+# Data for Team Challenge 1
+# ==========================================
+
+set P := Alpha Beta Gamma Delta;
+set M := CHI CA SEA;
+set K := CHI NEW;
+set Y := 1 2 3;
+set L := A C;
+
+# ---------- Revenues (from case text) ----------
+param R :=
+  Alpha 1350
+  Beta  1650
+  Gamma 3000
+  Delta 2500
+;
+
+# ---------- Demand D[p,m,y] (Table 1 in the PDF) ----------
+# PLEASE fill these values exactly from the PDF.
+# Example layout (numbers below are placeholders—replace with real ones):
+
+param D :=
+# Year 1
+[Alpha, CHI, 1] 3000   [Alpha, CA, 1] 1500   [Alpha, SEA, 1] 1200
+[Beta,  CHI, 1] 2000   [Beta,  CA, 1] 1000   [Beta,  SEA, 1] 1000
+[Gamma, CHI, 1] 2000   [Gamma, CA, 1]  500   [Gamma, SEA, 1]  750
+[Delta, CHI, 1]  500   [Delta, CA, 1]  300   [Delta, SEA, 1]  300
+
+# Year 2
+[Alpha, CHI, 2] 6000 
+[Alpha, CA,  2] 2000
+[Alpha, SEA, 2] 1800
+[Beta,  CHI, 2] 1000
+[Beta,  CA,  2] 500
+[Beta,  SEA, 2] 500
+[Gamma, CHI, 2] 2000
+[Gamma, CA,  2] 1000
+[Gamma, SEA, 2] 1500
+[Delta, CHI, 2] 1000
+[Delta, CA,  2] 600
+[Delta, SEA, 2] 600
+
+# Year 3
+[Alpha, CHI, 3] 3000
+[Alpha, CA,  3] 1000
+[Alpha, SEA, 3] 1000
+[Beta,  CHI, 3] 2500
+[Beta,  CA,  3] 1500
+[Beta,  SEA, 3] 1200
+[Gamma, CHI, 3] 2000
+[Gamma, CA,  3] 1000
+[Gamma, SEA, 3] 1500
+[Delta, CHI, 3] 2000
+[Delta, CA,  3] 1500
+[Delta, SEA, 3] 1200
+;
+
+# ---------- Manufacturing costs C_mfg[p,k] ----------
+# From the case text where it lists cost at CHI vs NEW.
+param C_mfg :=
+  [Alpha, CHI] 1000   [Alpha, NEW]  925
+  [Beta,  CHI] 1175   [Beta,  NEW] 1100
+  [Gamma, CHI] 2250   [Gamma, NEW] 2125
+  [Delta, CHI] 2100   [Delta, NEW] 1900
+;
+
+# ---------- Shipping costs C_ship[p,m,k] ----------
+# From the 2 shipping tables in the case (check carefully).
+
+param C_ship :=
+# From CHI plant
+[Alpha, CHI, CHI] 22   [Alpha, CA, CHI] 52   [Alpha, SEA, CHI] 50
+[Beta,  CHI, CHI] 19   [Beta,  CA, CHI] 48   [Beta,  SEA, CHI] 46
+[Gamma, CHI, CHI] 27   [Gamma, CA, CHI] 58   [Gamma, SEA, CHI] 56
+[Delta, CHI, CHI] 27   [Delta, CA, CHI] 58   [Delta, SEA, CHI] 56
+
+# From NEW plant
+[Alpha, CHI, NEW] 72   [Alpha, CA, NEW] 20   [Alpha, SEA, NEW] 30
+[Beta,  CHI, NEW] 48   [Beta,  CA, NEW] 17   [Beta,  SEA, NEW] 26
+[Gamma, CHI, NEW] 58   [Gamma, CA, NEW] 25   [Gamma, SEA, NEW] 35
+[Delta, CHI, NEW] 58   [Delta, CA, NEW] 25   [Delta, SEA, NEW] 35
+;
+
+# ---------- Testing time per unit ----------
+# A-line: Alpha & Beta need 1 hr, others 0
+# C-line: Gamma & Delta need 1 hr, others 0
+
+param a_test :=
+  [Alpha, A] 1   [Alpha, C] 0
+  [Beta,  A] 1   [Beta,  C] 0
+  [Gamma, A] 0   [Gamma, C] 1
+  [Delta, A] 0   [Delta, C] 1
+;
+
+# ---------- Assembly hours per unit at each plant ----------
+
+param a_assy:
+         CHI   NEW :=
+ Alpha    10    9
+ Beta     15    14
+ Gamma    20    18
+ Delta    22    20
+;
+;
+
+# ---------- Chicago capacities (base + expansion) ----------
+# Check these against the PDF:
+# base A=6000, C=2400; expanded A=8000, C=3200 => extra A=2000, C=800
+param Tbase_CHI :=
+  A 6000
+  C 2400
+;
+param Texp_CHI :=
+  A 2000
+  C 800
+;
+
+# Assembly: base=100000, expanded=133000 => extra=33000
+param Sbase_CHI := 100000;
+param Sexp_CHI  := 33000;
+
+# ---------- New plant capacities (per year when open) ----------
+# As given in the case (verify):
+param T_NEW :=
+  A 5000
+  C 2000
+;
+
+param S_NEW := 80000;
+
+# ---------- Fixed costs ----------
+# Opening NEW plant, CHI expansion, Delta development
+
+param F_open_NEW   := 2225000;
+param F_exp_CHI    :=  834000;
+param F_dev_Delta :=
+  [CHI] 775000
+  [NEW] 775000
+;
